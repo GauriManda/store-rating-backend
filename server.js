@@ -19,34 +19,33 @@ const allowedOrigins = [
 
 app.use(
   cors({
-    origin: function (origin, callback) {
+    origin: (origin, callback) => {
       if (!origin) return callback(null, true);
       if (allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        console.log("Blocked by CORS:", origin);
-        callback(new Error("Not allowed by CORS"));
+        return callback(null, true);
       }
+      console.log("❌ Blocked by CORS:", origin);
+      return callback(new Error("Not allowed by CORS"));
     },
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );
 
-// Middleware
+app.options("*", cors());
+
 app.use(express.json());
 
-// Routes
 app.use("/api", authRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api", userRoutes);
 app.use("/api/store-owner", storeOwnerRoutes);
 
-// Root route
 app.get("/", (req, res) => {
-  res.send("Store Rating backend is running!");
+  res.send("Store Rating backend is running successfully!");
 });
 
-// Start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
