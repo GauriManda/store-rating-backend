@@ -1,7 +1,5 @@
 import express from "express";
-import cors from "cors";
 import dotenv from "dotenv";
-
 import authRoutes from "./routes/authRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
@@ -17,31 +15,44 @@ const allowedOrigins = [
   "http://localhost:5173",
 ];
 
+// ✅ CORS middleware (must be at the top)
 app.use((req, res, next) => {
   const origin = req.headers.origin;
   if (allowedOrigins.includes(origin)) {
-    res.header("Access-Control-Allow-Origin", origin);
+    res.setHeader("Access-Control-Allow-Origin", origin);
   }
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.header("Access-Control-Allow-Credentials", "true");
+
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, OPTIONS"
+  );
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+
+  // ✅ Handle preflight requests immediately
   if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
+    res.status(204).end(); // 204 = No Content (prevents loops)
+    return;
   }
+
   next();
 });
 
+// ✅ Parse JSON bodies
 app.use(express.json());
 
+// ✅ Routes
 app.use("/api", authRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api", userRoutes);
 app.use("/api/store-owner", storeOwnerRoutes);
 
+// ✅ Root route
 app.get("/", (req, res) => {
   res.send("Store Rating backend is running successfully!");
 });
 
+// ✅ Start server
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`✅ Server running on port ${PORT}`);
 });
