@@ -1,0 +1,28 @@
+{
+  "name": "store-rating",
+  "version": "1.0.0",
+  "main": "index.js",
+   "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "author": "gauri",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.18.0",
+    "node": "^22.19.0",
+    "node.js": "^0.0.1-security",
+    "pg": "^8.16.3"
+  },
+  "keywords": [],
+  "description": "",
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
