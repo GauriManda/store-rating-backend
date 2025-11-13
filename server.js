@@ -12,8 +12,27 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+const allowedOrigins = [
+  "https://store-rating-frontend-zeta.vercel.app/",
+  "http://localhost:5173",
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.log("Blocked by CORS:", origin);
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
+
 // Middleware
-app.use(cors());
 app.use(express.json());
 
 // Routes
@@ -22,10 +41,12 @@ app.use("/api/admin", adminRoutes);
 app.use("/api", userRoutes);
 app.use("/api/store-owner", storeOwnerRoutes);
 
+// Root route
 app.get("/", (req, res) => {
-  res.send("Store Rating backend is running successfully!");
+  res.send("Store Rating backend is running!");
 });
 
+// Start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
