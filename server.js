@@ -22,6 +22,10 @@ app.use("/api/admin", adminRoutes);
 app.use("/api", userRoutes);
 app.use("/api/store-owner", storeOwnerRoutes);
 
+app.get("/", (req, res) => {
+  res.send("Store Rating backend is running successfully!");
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
