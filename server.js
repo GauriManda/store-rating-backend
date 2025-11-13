@@ -13,7 +13,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 const allowedOrigins = [
-  "https://store-rating-frontend-zeta.vercel.app",
+  "https://store-rating-frontend-zeta.vercel.app/",
   "http://localhost:5173",
 ];
 
