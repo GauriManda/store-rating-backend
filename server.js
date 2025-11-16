@@ -11,7 +11,6 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 10000;
 
-// ✅ Use official CORS middleware
 app.use(
   cors({
     origin: [
@@ -24,12 +23,10 @@ app.use(
   })
 );
 
-// ✅ Explicitly handle preflight requests
 app.options("*", cors());
 
 app.use(express.json());
 
-// ✅ Routes
 app.use("/api", authRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api", userRoutes);
@@ -40,5 +37,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`✅ Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
